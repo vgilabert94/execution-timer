@@ -60,7 +60,9 @@ Returns:
 
 ## Examples
 
-For all examples:  
+You can access a comprehensive examples notebook at the following link: [examples/notebook.ipynb](examples/notebook.ipynb)
+
+Load packages: 
 ```python
 import time
 from execution_timer import ExecutionTimer
@@ -84,42 +86,6 @@ None
 {'sample_function': [2.0000783540003795]}
 ```
 
-### Example 2: Measuring a function with printing the measured time and not saving it in a dictionary.
-```python
-timer = ExecutionTimer(save_measure=False)
-
-@timer.time_execution(print_measure=True)
-def sample_function(n):
-    time.sleep(n)
-
-print(sample_function(n=2))
-print(timer.get_measured_time())
-```
-Output
-```bash
-Function 'sample_function' executed in 2.00009 seconds.
-None
-{}
-```
-
-### Example 3: Measuring a function with returning the measured time without saving it in a dictionary.
-
-```python
-timer = ExecutionTimer(save_measure=False)
-
-@timer.time_execution(return_measure=True)
-def sample_function(n):
-    time.sleep(n)
-
-print(sample_function(n=2))
-print(timer.get_measured_time())
-```
-Output
-```bash
-(None, 2.000088321000021)
-{}
-```
-
 ### Example 4: Measuring N iterations
 
 ```python
@@ -138,28 +104,6 @@ Output
 None
 {'sample_function': [1.0000926779994188, 1.0000929059988266, 1.00007422499948, 1.0001207340010296, 1.000119641999845]}
 {'sample_function': 1.00010003699972}
-```
-
-### Example 5: Measuring and return measured of same function.
-
-```python
-timer = ExecutionTimer()
-
-@timer.time_execution(return_measure=True)
-def sample_function(n):
-    time.sleep(n)
-
-print(sample_function(n=2))
-print(sample_function(n=3))
-print(sample_function(n=4))
-print(timer.get_measured_time())
-```
-Output
-```bash
-(None, 2.0000901450002857)
-(None, 3.0000913369985938)
-(None, 4.000080966001406)
-{'sample_function': [2.0000901450002857, 3.0000913369985938, 4.000080966001406]}
 ```
 
 ### Example 6: Measuring a Method from a class
