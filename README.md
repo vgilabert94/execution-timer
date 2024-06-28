@@ -8,7 +8,7 @@ ExecutionTimer is a utility class for measuring execution times of functions or 
 - Install via pip:
 
 ```bash
-pip install execution-timer
+pip install timer-decorator
 ```
 
 - Install via git clone:
