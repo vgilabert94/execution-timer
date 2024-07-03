@@ -19,6 +19,20 @@ git clone https://github.com/vgilabert94/execution-timer
 
 ## Documentation
 
+### Function: `time_execution`
+
+#### Parameters
+- `return_measure` (bool, optional): Whether to return the measured time along with the function result (default is False).
+- `nanoseconds` (bool, optional): Whether to use nanoseconds resolution for timing measurements (default is False).
+- `n_iter` (int, optional): The number of iterations to execute the function/method (default is 1). If n_iter > 1 and return_measure=True: result of the function will be the last execution.
+- `return_average` (bool, optional): Whether to return the average time when measuring over multiple iterations (default is True). Only is used when n_iter > 1.
+
+#### Notes
+- If `return_measure`=False and `return_average`=False: a message will be printed for each iteration.
+- If `n_iter` > 1 and `return_measure`=True: the result will be the last function result.
+- If `n_iter` > 1 and `return_measure`=True and `return_average`=False: the result will be the last function result with a list of times for each iteration.
+
+
 ### Class: `ExecutionTimer`
 
 #### Parameters
@@ -65,7 +79,7 @@ You can access a comprehensive examples notebook at the following link: [example
 Load packages: 
 ```python
 import time
-from execution_timer import ExecutionTimer
+from execution_timer import ExecutionTimer, time_execution
 ```
 
 ### Example 1: Measuring a function with the default settings.
@@ -77,21 +91,34 @@ timer = ExecutionTimer()
 def sample_function(n):
     time.sleep(n)
 
-print(sample_function(n=2))
+print(sample_function(n=1))
 print(timer.get_measured_time())
 ```
 Output
 ```bash
 None
-{'sample_function': [2.0000783540003795]}
+{'sample_function': [1.0000783540003795]}
 ```
 
-### Example 4: Measuring N iterations
+```python
+@time_execution
+def sample_function(n):
+    time.sleep(n)
+
+print(sample_function(n=1))
+```
+Output
+```bash
+The 'sample_function' function was executed in 1.00085 seconds.
+None
+```
+
+### Example 2: Measuring N iterations
 
 ```python
 timer = ExecutionTimer(n_iter=5)
 
-@timer.time_execution()
+@timer.time_execution
 def sample_function(n):
     time.sleep(n)
 
@@ -101,12 +128,26 @@ print(timer.average_measured_time())
 ```
 Output
 ```bash
+The 'sample_function' function was executed in 1.00098 seconds.
 None
-{'sample_function': [1.0000926779994188, 1.0000929059988266, 1.00007422499948, 1.0001207340010296, 1.000119641999845]}
-{'sample_function': 1.00010003699972}
+{'sample_function': [1.0010039510007118, 1.001013477000015, 1.001078371999938, 1.0008607439995103, 1.0009819289998632]}
+{'sample_function': 1.0009876946000076}
 ```
 
-### Example 6: Measuring a Method from a class
+```python
+@time_execution(n_iter=5)
+def sample_function(n):
+    time.sleep(n)
+
+print(sample_function(n=1))
+```
+Output
+```bash
+The 'sample_function' function was executed in 1.00030 seconds.
+None
+```
+
+### Example 8: Measuring a Method from a class
 
 ```python
 timer = ExecutionTimer()
@@ -124,15 +165,16 @@ class SampleClass:
         time.sleep(2*n)
 
 sample = SampleClass()
-print(sample.sample_method(n=2))
-print(sample.sample_method_x2(n=2))
+print(sample.sample_method(n=1))
+print(sample.sample_method_x2(n=1))
 print(timer.get_measured_time())
 ```
 Output
 ```bash
-(None, 2.0000849130010465)
+(None, 1.0002362490004089)
+The 'sample_method_x2' function was executed in 2.00203 seconds.
 None
-{'SampleClass': {'sample_method': [2.0000849130010465], 'sample_method_x2': [4.000076272001024]}}
+{'SampleClass': {'sample_method': [1.0002362490004089], 'sample_method_x2': [2.0020319710001786]}}
 ```
 
 ## LICENSE 

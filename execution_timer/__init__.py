@@ -4,6 +4,6 @@ __version__ = "0.1.1"
 
 # __init__.py
 import execution_timer
-from .execution_timer import ExecutionTimer
+from .execution_timer import ExecutionTimer, time_execution
 
-__all__ = ["execution_timer", "ExecutionTimer"]
+__all__ = ["execution_timer", "ExecutionTimer", "time_execution"]
