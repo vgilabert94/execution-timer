@@ -41,9 +41,14 @@ git clone https://github.com/vgilabert94/execution-timer
 - `nanoseconds` (bool, optional): Flag to use nanoseconds resolution for timing measurements (default is False).
 - `n_iter` : (int, optional): Number of iterations to execute the function/method (default is 1).
 
-### Methods
+#### Notes
+- If `n_iter` > 1 and `return_measure`=True: the result will be the last function result.
+- If `n_iter` > 1 and `return_measure`=False: the time printed will be the last execution result.
 
-#### `time_execution(self, func: Callable[..., Any] = None, *, return_measure: bool = False) -> Union[Callable[..., Any], Any]`
+
+#### Methods
+
+#### `time_execution`
 
 Decorator method to measure the execution time of a function or method.
 
@@ -54,7 +59,7 @@ Decorator method to measure the execution time of a function or method.
 Returns:
 - `wrapper` (callable): Decorated function that measures the execution time of `func`.
 
-#### `get_measured_time(self) -> dict[str, Optional[float]]`
+#### `get_measured_time`
 
 Retrieve the recorded execution times.
 
@@ -62,10 +67,10 @@ Returns:
 - `dict`: Dictionary containing the measured execution times. Keys are function or method names, and values are lists of measured times.
 
 
-#### `reset_measured_timedef reset_measured_time(self) -> None:`
+#### `reset_measured_time`
 Reset the recorded execution times.
 
-#### `average_measured_time(self) -> dict[str, Optional[float]]:`
+#### `average_measured_time`
 Calculate the average execution times for all recorded functions or methods.
 
 Returns:
