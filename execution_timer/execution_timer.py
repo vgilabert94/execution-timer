@@ -256,7 +256,8 @@ class ExecutionTimer:
         """
 
         save_measure = CHECK_TYPE(save_measure, "save_measure", bool, True)
-        return_measure = CHECK_TYPE(return_measure, "return_measure", bool, False)
+        return_measure = CHECK_TYPE(
+            return_measure, "return_measure", bool, False)
         nanoseconds = CHECK_TYPE(nanoseconds, "nanoseconds", bool, False)
         n_iter = CHECK_TYPE(n_iter, "n_iter", int, 1)
         n_iter = (
@@ -281,6 +282,7 @@ class ExecutionTimer:
         func: Callable[..., Any] = None,
         *,
         return_measure: Optional[bool] = None,
+        noisy: Optional[bool] = None,
     ) -> Union[Callable[..., Any], Any]:
         """
         Decorator method to measure the execution time of a function or method.
@@ -329,21 +331,24 @@ class ExecutionTimer:
                             if class_name not in self.execution_times:
                                 self.execution_times[class_name] = {}
                             if func_name not in self.execution_times[class_name]:
-                                self.execution_times[class_name][func_name] = []
+                                self.execution_times[class_name][func_name] = [
+                                ]
                             self.execution_times[class_name][func_name].append(
                                 elapsed_time
                             )
                         else:
                             if func_name not in self.execution_times:
                                 self.execution_times[func_name] = []
-                            self.execution_times[func_name].append(elapsed_time)
+                            self.execution_times[func_name].append(
+                                elapsed_time)
 
                 if return_measure:
                     return result, elapsed_time
                 else:
-                    print(
-                        f"The '{inner_func.__name__}' function was executed in {elapsed_time:.5f} {'nanoseconds' if self.nanoseconds else 'seconds'}."
-                    )
+                    if noisy:
+                        print(
+                            f"The '{inner_func.__name__}' function was executed in {elapsed_time:.5f} {'nanoseconds' if self.nanoseconds else 'seconds'}."
+                        )
                     return result
 
             return wrapper
@@ -389,9 +394,7 @@ class ExecutionTimer:
             elif isinstance(value, dict):
                 class_averages: dict[str, float] = {}
                 for func_name, times in value.items():
-                    class_averages[func_name] = (
-                        sum(times) / len(times) if times else None
-                    )
-                averages[key] = class_averages
+                    class_averages[func_name] = {"avg": sum(
+                        times) / len(times), "times": len(times), "cumulative": sum(times)} if times else {}
 
         return averages
